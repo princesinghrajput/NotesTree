@@ -3,80 +3,82 @@ import toast from 'react-hot-toast';
 
 const AuthContext = createContext(null);
 
-// Dummy user data
-const DUMMY_USERS = [
-  {
-    id: '1',
-    name: 'Test User',
-    email: 'test@example.com',
-    password: 'password123' 
-  }
-];
-
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check for existing session on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
-    }
-    setIsLoading(false);
+    const checkSession = async () => {
+      try {
+        const session = localStorage.getItem('session');
+        if (session) {
+          const sessionData = JSON.parse(session);
+          const response = await fetch('http://localhost:5000/api/auth/verify', {
+            headers: {
+              'Authorization': `Bearer ${sessionData.access_token}`
+            }
+          });
+          
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData);
+            setIsAuthenticated(true);
+          } else {
+            throw new Error('Invalid session');
+          }
+        }
+      } catch (error) {
+        console.error('Session validation error:', error);
+        localStorage.removeItem('session');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkSession();
   }, []);
 
-  const login = async (credentials) => {
+  const login = async (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+  };
+
+  const logout = async () => {
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Find matching user
-      const matchedUser = DUMMY_USERS.find(
-        u => u.email === credentials.email && u.password === credentials.password
-      );
-
-      if (matchedUser) {
-        const { password, ...userWithoutPassword } = matchedUser;
-        setUser(userWithoutPassword);
-        setIsAuthenticated(true);
-        localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-        toast.success(`Welcome back, ${userWithoutPassword.name}!`);
-        return true;
+      const session = localStorage.getItem('session');
+      if (session) {
+        await fetch('http://localhost:5000/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${JSON.parse(session).access_token}`
+          }
+        });
       }
-      
-      toast.error('Invalid email or password');
-      return false;
     } catch (error) {
-      console.error('Login error:', error);
-      toast.error('An error occurred during login');
-      return false;
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('session');
+      setIsAuthenticated(false);
+      setUser(null);
+      toast.success('Logged out successfully');
     }
   };
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    setUser(null);
-    localStorage.removeItem('user');
-    toast.success('Logged out successfully');
+  const value = {
+    isAuthenticated,
+    user,
+    login,
+    logout,
+    isLoading
   };
 
   if (isLoading) {
-    return null; // or a loading spinner
+    return <div>Loading...</div>; // Or your loading component
   }
 
   return (
-    <AuthContext.Provider 
-      value={{ 
-        isAuthenticated, 
-        user, 
-        login, 
-        logout,
-        isLoading 
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

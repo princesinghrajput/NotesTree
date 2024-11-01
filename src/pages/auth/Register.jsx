@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Github, Twitter, ArrowLeft, Loader2, Check, AlertCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ export const Register = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -32,10 +34,48 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
+    // Validate password strength
+    if (passwordStrength < 75) {
+      toast.error('Please create a stronger password');
+      return;
+    }
+
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsLoading(false);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          name: formData.name
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success('Registration successful! Please log in.');
+        navigate('/auth/login');
+      } else {
+        toast.error(data.message || 'Registration failed');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast.error('Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getStrengthColor = () => {

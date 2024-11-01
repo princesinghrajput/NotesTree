@@ -6,24 +6,48 @@ import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
 export const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const success = await login({ email, password });
-      if (success) {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        await login(data.user);
+        localStorage.setItem('session', JSON.stringify(data.session));
         const from = location.state?.from?.pathname || '/app';
         navigate(from, { replace: true });
+        toast.success('Welcome back!');
+      } else {
+        toast.error(data.message || 'Login failed');
       }
     } catch (error) {
+      console.error('Login error:', error);
       toast.error('Login failed. Please try again.');
     } finally {
       setIsLoading(false);
@@ -73,8 +97,8 @@ export const Login = () => {
                   id="email"
                   type="email"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl 
                            text-white placeholder-gray-500 focus:outline-none focus:ring-2 
                            focus:ring-blue-500/50 focus:border-transparent transition-all duration-200"
@@ -90,8 +114,8 @@ export const Login = () => {
                   id="password"
                   type="password"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl 
                            text-white placeholder-gray-500 focus:outline-none focus:ring-2 
                            focus:ring-blue-500/50 focus:border-transparent transition-all duration-200"

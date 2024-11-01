@@ -28,6 +28,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@geoffcox/react-splitter": "^2.1.2",
+    "@kinde-oss/kinde-auth-react": "^4.0.4",
     "@react-spring/web": "^9.7.5",
     "framer-motion": "^10.16.4",
     "gsap": "^3.12.5",
