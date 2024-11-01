@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Sparkles, Zap, ArrowRight } from 'lucide-react';
+import { Sparkles, Zap, ArrowRight, Layout } from 'lucide-react';
 import KUTE from 'kute.js';
 import { TypeAnimation } from 'react-type-animation';
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { CustomCursor } from '../../components/effects/CustomCursor';
 import { StarCursor } from '../../components/effects/StarCursor';
+import { useAuth } from '../../context/AuthContext';
 
 export const Hero = () => {
   const targetRef = useRef(null);
@@ -18,6 +19,8 @@ export const Hero = () => {
 
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     // Animate the blob
@@ -217,28 +220,46 @@ export const Hero = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-10 flex flex-col sm:flex-row justify-center gap-4 px-4"
           >
-            <Link
-              to="/auth/register"
-              className="group relative inline-flex items-center justify-center px-8 py-3.5 
-                       rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 
-                       text-white font-medium text-lg 
-                       transition-all duration-300 transform hover:scale-105
-                       hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-            >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 
-                            blur-lg opacity-50 group-hover:opacity-100 transition-opacity" />
-              <Zap className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-              <span className="relative">Start Creating</span>
-            </Link>
-            <Link
-              to="/auth/login"
-              className="relative inline-flex items-center justify-center px-8 py-3.5 
-                       rounded-2xl bg-white/10 backdrop-blur-lg text-white 
-                       font-medium text-lg border border-white/20
-                       hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
-            >
-              Sign In
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                to="/app"
+                className="group relative inline-flex items-center justify-center px-8 py-3.5 
+                         rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 
+                         text-white font-medium text-lg 
+                         transition-all duration-300 transform hover:scale-105
+                         hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+              >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 
+                              blur-lg opacity-50 group-hover:opacity-100 transition-opacity" />
+                <Layout className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+                <span className="relative">Go to Dashboard</span>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/auth/register"
+                  className="group relative inline-flex items-center justify-center px-8 py-3.5 
+                           rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 
+                           text-white font-medium text-lg 
+                           transition-all duration-300 transform hover:scale-105
+                           hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+                >
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 
+                                blur-lg opacity-50 group-hover:opacity-100 transition-opacity" />
+                  <Zap className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+                  <span className="relative">Start Creating</span>
+                </Link>
+                <Link
+                  to="/auth/login"
+                  className="relative inline-flex items-center justify-center px-8 py-3.5 
+                           rounded-2xl bg-white/10 backdrop-blur-lg text-white 
+                           font-medium text-lg border border-white/20
+                           hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
+                >
+                  Sign In
+                </Link>
+              </>
+            )}
           </motion.div>
         </div>
       </motion.div>
