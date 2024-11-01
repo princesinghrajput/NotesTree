@@ -38,9 +38,9 @@ export const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: Mail, text: 'hello@notetree.com' },
-    { icon: MapPin, text: 'San Francisco, CA' },
-    { icon: Phone, text: '+1 (555) 123-4567' }
+    { icon: Mail, text: 'prince@notetree.com' },
+    { icon: MapPin, text: 'Mohali, Chandigarh' },
+    { icon: Phone, text: '+91 8292222569' }
   ];
 
   return (
