@@ -1,0 +1,248 @@
+/* Editor container */
+.codex-editor {
+  @apply px-4 bg-white rounded-lg shadow-sm transition-all duration-200;
+}
+
+.ce-block__content {
+  @apply max-w-4xl mx-auto;
+}
+
+/* Enhanced Toolbar */
+.ce-toolbar__content {
+  @apply max-w-4xl mx-auto bg-white/90 backdrop-blur-sm rounded-lg shadow-sm;
+}
+
+.ce-toolbar__plus {
+  @apply hover:bg-blue-50 rounded-lg transition-colors duration-200 transform hover:scale-105;
+}
+
+.ce-toolbar__settings-btn {
+  @apply hover:bg-blue-50 rounded-lg transition-colors duration-200 transform hover:scale-105;
+}
+
+/* Block styles with animations */
+.ce-block--selected .ce-block__content {
+  @apply bg-blue-50/50 rounded-lg transition-all duration-200;
+}
+
+.ce-paragraph {
+  @apply leading-relaxed text-gray-800 transition-colors duration-200;
+}
+
+/* Enhanced Headers */
+.ce-header {
+  @apply font-bold text-gray-900 transition-all duration-200;
+}
+
+h1.ce-header {
+  @apply text-4xl;
+}
+
+h2.ce-header {
+  @apply text-3xl;
+}
+
+h3.ce-header {
+  @apply text-2xl;
+}
+
+/* Lists */
+.cdx-list {
+  @apply pl-6 my-4;
+}
+
+.cdx-list__item {
+  @apply my-2;
+}
+
+/* Checklist */
+.cdx-checklist__item {
+  @apply flex items-start gap-2 my-2;
+}
+
+.cdx-checklist__item-checkbox {
+  @apply w-4 h-4 mt-1 rounded border-gray-300 text-blue-600 
+         focus:ring-blue-500;
+}
+
+.cdx-checklist__item--checked {
+  @apply text-gray-500 line-through;
+}
+
+/* Code */
+.ce-code {
+  @apply font-mono bg-gray-50 p-4 rounded-lg text-sm;
+}
+
+/* Quote */
+.cdx-quote {
+  @apply border-l-4 border-gray-300 pl-4 italic;
+}
+
+/* Table */
+.tc-table {
+  @apply w-full border-collapse;
+}
+
+.tc-row {
+  @apply border-b border-gray-200;
+}
+
+.tc-cell {
+  @apply border border-gray-200 p-2;
+}
+
+/* Inline toolbar */
+.ce-inline-toolbar {
+  @apply bg-white shadow-lg border border-gray-200 rounded-lg;
+}
+
+.ce-inline-toolbar__buttons {
+  @apply p-1;
+}
+
+.ce-inline-tool {
+  @apply p-2 hover:bg-gray-100 rounded transition-colors;
+}
+
+.ce-inline-tool--active {
+  @apply bg-blue-50 text-blue-600;
+}
+
+/* Conversion toolbar */
+.ce-conversion-toolbar {
+  @apply bg-white shadow-lg border border-gray-200 rounded-lg;
+}
+
+.ce-conversion-tool {
+  @apply p-2 hover:bg-gray-100 rounded transition-colors;
+}
+
+/* Settings */
+.ce-settings {
+  @apply bg-white shadow-lg border border-gray-200 rounded-lg;
+}
+
+/* Popover */
+.ce-popover {
+  @apply bg-white shadow-lg border border-gray-200 rounded-lg;
+}
+
+/* Placeholder */
+.ce-block--empty::before {
+  @apply text-gray-400;
+}
+
+/* Add smooth transitions */
+.ce-block {
+  @apply transition-all duration-200;
+}
+
+/* Add loading state */
+.editor-loading {
+  @apply animate-pulse bg-gray-100;
+}
+
+/* Add focus states */
+.ce-toolbar__plus:focus,
+.ce-toolbar__settings-btn:focus {
+  @apply outline-none ring-2 ring-blue-400 ring-offset-2;
+}
+
+/* Add hover effects for blocks */
+.ce-block:hover {
+  @apply bg-gray-50/50;
+}
+
+/* Fullscreen mode */
+.editor-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: white;
+}
+
+/* Enhanced toolbar */
+.editor-toolbar {
+  @apply flex items-center gap-2 p-1 bg-white/90 backdrop-blur-sm 
+         border border-gray-200 rounded-lg shadow-sm;
+}
+
+.toolbar-button {
+  @apply p-2 hover:bg-gray-100 rounded transition-colors relative
+         focus:outline-none focus:ring-2 focus:ring-blue-400;
+}
+
+/* Improved typography */
+.ce-block__content {
+  @apply max-w-4xl mx-auto leading-relaxed;
+}
+
+.ce-paragraph {
+  @apply text-gray-800 text-base leading-relaxed;
+}
+
+/* Better block spacing */
+.ce-block + .ce-block {
+  @apply mt-4;
+}
+
+/* Improved headings */
+.ce-header {
+  @apply font-bold text-gray-900 mb-4;
+}
+
+/* Code blocks */
+.ce-code {
+  @apply font-mono bg-gray-50 p-4 rounded-lg text-sm leading-relaxed
+         border border-gray-200;
+}
+
+/* Lists */
+.cdx-list {
+  @apply space-y-2;
+}
+
+/* Quotes */
+.cdx-quote {
+  @apply border-l-4 border-gray-300 pl-4 italic my-4;
+}
+
+/* Tables */
+.tc-table {
+  @apply w-full border-collapse my-4;
+}
+
+.tc-cell {
+  @apply border border-gray-200 p-2;
+}
+
+/* Resizable handle styles */
+.resize-handle {
+  @apply h-2 w-full cursor-row-resize hover:bg-blue-200 
+         transition-colors absolute bottom-0 left-0;
+}
+
+/* Editor container adjustments */
+.editor-container {
+  @apply h-full flex flex-col overflow-hidden;
+}
+
+/* Ensure content is scrollable */
+.ce-block__content {
+  @apply overflow-y-auto;
+}
+
+/* Smooth resize transitions */
+.react-resizable {
+  @apply transition-all duration-200;
+}
+
+/* Handle hover effects */
+.resize-handle:hover::after {
+  content: '';
+  @apply absolute inset-x-0 h-1 bg-blue-400 opacity-50;
+} 

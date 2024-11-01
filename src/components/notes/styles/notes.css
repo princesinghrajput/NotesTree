@@ -1,0 +1,71 @@
+/* Tree Node Styles */
+.tree-node {
+  @apply transition-all duration-200;
+}
+
+.tree-node-content {
+  @apply flex items-center p-2 rounded-lg cursor-pointer
+         hover:bg-gray-50 transition-colors duration-200;
+}
+
+.tree-node-selected {
+  @apply bg-blue-50 text-blue-600;
+}
+
+.tree-node-dragging {
+  @apply opacity-50;
+}
+
+.tree-node-drop-target {
+  @apply border-2 border-blue-400;
+}
+
+/* Tree Icons */
+.tree-icon {
+  @apply mx-2 text-gray-500;
+}
+
+.tree-toggle {
+  @apply p-1 hover:bg-gray-100 rounded transition-colors duration-200;
+}
+
+/* Search Bar Styles */
+.search-container {
+  @apply relative mb-4;
+}
+
+.search-input {
+  @apply w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200
+         focus:outline-none focus:ring-2 focus:ring-blue-400
+         bg-white/90 backdrop-blur-sm transition-all duration-200;
+}
+
+.search-icon {
+  @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400;
+}
+
+/* Tree Container */
+.tree-container {
+  @apply h-full flex flex-col bg-white;
+}
+
+.tree-content {
+  @apply flex-1 overflow-y-auto p-2;
+}
+
+/* Animations */
+.tree-node-enter {
+  @apply opacity-0 -translate-y-2;
+}
+
+.tree-node-enter-active {
+  @apply opacity-100 translate-y-0 transition-all duration-200;
+}
+
+.tree-node-exit {
+  @apply opacity-100 translate-y-0;
+}
+
+.tree-node-exit-active {
+  @apply opacity-0 -translate-y-2 transition-all duration-200;
+} 

@@ -1,0 +1,55 @@
+src/
+├── components/
+│   ├── common/
+│   │   ├── ErrorBoundary.jsx
+│   │   └── icons/
+│   │       └── index.jsx
+│   ├── editor/
+│   │   ├── EditorWrapper.jsx
+│   │   └── EditorPlaceholder.jsx
+│   ├── layout/
+│   │   ├── SplitLayout.jsx
+│   │   └── SplitterHandle.jsx
+│   ├── panels/
+│   │   ├── LeftPanel.jsx
+│   │   └── RightPanel.jsx
+│   ├── notes/
+│   │   └── CollapsibleTree/
+│   │       ├── index.jsx
+│   │       ├── CustomNode.jsx
+│   │       ├── ContextMenu.jsx
+│   │       └── QuickAddPanel.jsx
+│   └── RichTextEditor/
+│       ├── index.jsx
+│       └── styles.css
+├── config/
+│   ├── ui.js
+│   └── editor.js
+├── context/
+│   └── NoteContext.jsx
+├── hooks/
+│   ├── tree/
+│   │   ├── index.js
+│   │   ├── useTree.js
+│   │   ├── useTreeSelection.js
+│   │   └── useTreeZoom.js
+│   ├── useTags.js
+│   └── useOutsideClick.js
+├── theme/
+│   └── colors.js
+├── utils/
+│   └── helpers.js
+├── styles/
+│   └── index.css
+├── App.jsx
+└── main.jsx
+├── pages/
+│   ├── landing/
+│   │   ├── index.jsx
+│   │   ├── Hero.jsx
+│   │   ├── Features.jsx
+│   │   └── Footer.jsx
+│   └── auth/
+│       ├── index.jsx
+│       ├── Login.jsx
+│       └── Register.jsx 

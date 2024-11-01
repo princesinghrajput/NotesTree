@@ -1,0 +1,33 @@
+/* Add these styles to handle the splitter */
+.splitter-container {
+  @apply flex h-full;
+}
+
+.splitter {
+  @apply relative;
+  touch-action: none;
+}
+
+.splitter::after {
+  content: '';
+  @apply absolute inset-0 z-10;
+}
+
+.splitter:hover::after {
+  @apply bg-blue-200 opacity-50;
+}
+
+.splitter.dragging::after {
+  @apply bg-blue-300 opacity-70;
+}
+
+/* Ensure smooth transitions */
+.primary-pane,
+.secondary-pane {
+  @apply transition-all duration-200;
+}
+
+/* Prevent text selection while dragging */
+.dragging * {
+  @apply select-none;
+} 

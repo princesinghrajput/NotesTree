@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom grid background */
+.bg-grid-slate-100 {
+  background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
+    linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom node styles */
+.node__root circle {
+  fill: #3b82f6;
+}
+
+.node__branch circle {
+  fill: #60a5fa;
+}
+
+.node__leaf circle {
+  fill: #93c5fd;
+}
+
+/* Smooth transitions */
+.react-d3-tree-node {
+  transition: all 300ms ease-in-out;
+}
+
+.react-d3-tree-link {
+  transition: all 300ms ease-in-out;
+}
+
+/* Add new styles */
+.node-gradient {
+  stop-color: #60A5FA;
+}
+
+.node-gradient-active {
+  stop-color: #3B82F6;
+}
+
+.tree-node {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tree-node:hover {
+  filter: brightness(1.1);
+}
+
+.tree-link {
+  stroke: #93C5FD;
+  stroke-width: 2px;
+  transition: all 0.2s ease;
+}
+
+.tree-link:hover {
+  stroke: #60A5FA;
+}
+
+/* Add to existing styles */
+.drag-over {
+  filter: brightness(1.2);
+  stroke: #3B82F6;
+  stroke-width: 2px;
+}
+
+.node-actions {
+  transition: opacity 0.2s ease;
+}
+
+.group:hover .node-actions {
+  opacity: 1;
+}
+
+/* Obsidian-like animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Enhanced tree connections */
+.react-d3-tree-link {
+  stroke-dasharray: 5;
+  animation: flowingDash 30s linear infinite;
+}
+
+@keyframes flowingDash {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+/* Add these to your existing styles */
+.node-circle {
+  transition: all 0.2s ease-in-out;
+}
+
+.node-circle:hover {
+  filter: brightness(1.1);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.quick-actions {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.group:hover .quick-actions {
+  opacity: 1;
+}
+
+/* Add these styles */
+foreignObject {
+  overflow: visible !important;
+  pointer-events: all !important;
+}
+
+.edit-input {
+  position: relative;
+  z-index: 1000;
+}
+
+.quick-actions {
+  pointer-events: all !important;
+}
+
+/* Add these styles for better drag feedback */
+.dragging {
+  cursor: grabbing !important;
+}
+
+.dragging * {
+  pointer-events: none;
+}
+
+/* Add smooth transitions for node colors */
+.node-circle {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Add styles for tree connections */
+.tree-link {
+  stroke: #e2e8f0;
+  stroke-width: 2px;
+  transition: all 0.3s ease-in-out;
+}
+
+.tree-link:hover {
+  stroke: #94a3b8;
+}
+
+/* Add glass effect for context menus */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
