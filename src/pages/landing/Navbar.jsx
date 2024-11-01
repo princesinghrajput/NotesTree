@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sparkles, ExternalLink } from 'lucide-react';
+import { 
+  Menu, X, Sparkles, ExternalLink, 
+  User, LogOut, Settings, Layout
+} from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(null);
+  const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,11 +22,41 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setIsProfileOpen(false);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   const menuItems = [
     { name: 'Features', path: '/features' },
     { name: 'Pricing', path: '/pricing' },
     { name: 'About', path: '/about' },
     { name: 'Blog', path: '/blog', isNew: true },
+  ];
+
+  const profileItems = [
+    { 
+      name: 'Dashboard', 
+      path: '/app', 
+      icon: Layout,
+      description: 'Access your notes'
+    },
+    { 
+      name: 'Settings', 
+      path: '/app/settings', 
+      icon: Settings,
+      description: 'Manage your account'
+    },
+    { 
+      name: 'Logout', 
+      action: handleLogout, 
+      icon: LogOut,
+      description: 'Sign out of your account'
+    }
   ];
 
   return (
@@ -79,36 +115,124 @@ export const Navbar = () => {
 
             <div className="h-8 w-px bg-gray-700/50 mx-2" />
 
-            {/* Auth Buttons */}
-            <Link
-              to="/auth/login"
-              className="px-4 py-2 text-gray-300 hover:text-white transition-colors duration-200"
-            >
-              Sign in
-            </Link>
-            <Link
-              to="/auth/register"
-              className="group relative px-4 py-2 rounded-xl overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-violet-500 
-                            transition-all duration-300 group-hover:opacity-90" />
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-violet-500 
-                            opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300" />
-              <span className="relative flex items-center text-white">
-                Get Started <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </Link>
-          </div>
+            {/* Auth Section */}
+            <div className="hidden md:flex items-center space-x-1">
+              {isAuthenticated ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className="flex items-center space-x-2 px-4 py-2 rounded-xl 
+                             hover:bg-white/5 transition-colors duration-200"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 
+                                 to-violet-500 flex items-center justify-center text-white 
+                                 font-medium">
+                      {user?.name?.[0]?.toUpperCase() || <User size={16} />}
+                    </div>
+                    <span className="text-gray-300 hover:text-white">
+                      {user?.name || 'Profile'}
+                    </span>
+                  </button>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg bg-white/5 text-gray-300 
-                     hover:text-white hover:bg-white/10 transition-colors"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </motion.button>
+                  {/* Profile Dropdown */}
+                  <AnimatePresence>
+                    {isProfileOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute right-0 mt-2 w-72 rounded-2xl bg-black/90 
+                                 backdrop-blur-xl border border-white/10 shadow-2xl 
+                                 shadow-black/40 overflow-hidden"
+                      >
+                        {/* User Info */}
+                        <div className="p-4 border-b border-white/10">
+                          <div className="font-medium text-white">
+                            {user?.name || 'User'}
+                          </div>
+                          <div className="text-sm text-gray-400">
+                            {user?.email || 'user@example.com'}
+                          </div>
+                        </div>
+
+                        {/* Menu Items */}
+                        <div className="p-2">
+                          {profileItems.map((item) => (
+                            item.action ? (
+                              <button
+                                key={item.name}
+                                onClick={item.action}
+                                className="w-full flex items-center space-x-3 p-3 rounded-xl
+                                         text-left text-gray-300 hover:text-white 
+                                         hover:bg-white/5 transition-colors duration-200"
+                              >
+                                <item.icon className="w-5 h-5" />
+                                <div>
+                                  <div className="font-medium">{item.name}</div>
+                                  <div className="text-sm text-gray-500">
+                                    {item.description}
+                                  </div>
+                                </div>
+                              </button>
+                            ) : (
+                              <Link
+                                key={item.name}
+                                to={item.path}
+                                className="flex items-center space-x-3 p-3 rounded-xl
+                                         text-gray-300 hover:text-white hover:bg-white/5 
+                                         transition-colors duration-200"
+                              >
+                                <item.icon className="w-5 h-5" />
+                                <div>
+                                  <div className="font-medium">{item.name}</div>
+                                  <div className="text-sm text-gray-500">
+                                    {item.description}
+                                  </div>
+                                </div>
+                              </Link>
+                            )
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <>
+                  <Link
+                    to="/auth/login"
+                    className="px-4 py-2 text-gray-300 hover:text-white 
+                             transition-colors duration-200"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    to="/auth/register"
+                    className="group relative px-4 py-2 rounded-xl overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 
+                                 to-violet-500 transition-all duration-300 
+                                 group-hover:opacity-90" />
+                    <span className="relative flex items-center text-white">
+                      Get Started 
+                      <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 
+                                          transition-transform" />
+                    </span>
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg bg-white/5 text-gray-300 
+                       hover:text-white hover:bg-white/10 transition-colors"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </motion.button>
+          </div>
         </div>
       </div>
 
