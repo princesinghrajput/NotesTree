@@ -4,10 +4,12 @@ import { NoteProvider } from './context/NoteContext';
 import { AuthProvider } from './context/AuthContext';
 import { Router } from './routes';
 import { TOAST_CONFIG } from './config/ui';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   return (
     <AuthProvider>
+      
       <NoteProvider>
         <Router />
         <Toaster 
